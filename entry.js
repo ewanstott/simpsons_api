@@ -7,18 +7,22 @@ async function getApiData(value) {
   //begin spinner here
   rootRef.innerHTML = spinner;
 
-  const result = await axios.get(
-    `https://thesimpsonsquoteapi.glitch.me/quotes?character=${value}`
-  );
+  //try statement (try and get data)
+  try {
+    const result = await axios.get(
+      `https://thesimpsonsquoteapi.glitch.me/quotes?character=${value}`
+    );
+    const { character, image, quote } = result.data[0];
 
-  const { character, image, quote } = result.data[0];
-
-  rootRef.innerHTML = `<div>
+    rootRef.innerHTML = `<div>
                                     <h1>${character}</h1>
                                     <p>${quote}</p>
                                     <img src="${image}" alt="${character}"/>
                                     
                         </div>`;
+  } catch (err) {
+    rootRef.innerHTML = `API down, try again later`;
+  }
 }
 
 searchRef.addEventListener("input", (e) => {
